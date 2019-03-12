@@ -1,0 +1,110 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+if [ -d $HOME/Tmux-Bunch-Reborn ]; then
+	dir=$HOME/Tmux-Bunch-Reborn
+else
+	echo -e "\033[1;31m You'd cloned in wrong directory please again clone in home directory \033[0m"
+	exit 1
+fi
+
+####################
+# Check Metasploit #
+####################
+
+if [ ! -d $HOME/metasploit-framework ]; then
+	echo -e "\033[1;31m metasploit can not be found please install metasploit \033[0m"
+	exit 1
+fi
+
+####################
+#  Get apk.rb      #
+####################
+
+getapkrb() {
+	APKRB="$HOME/metasploit-framework/lib/msf/core/payload/apk.rb"
+	wget https://raw.githubusercontent.com/Hax4us/Metasploit_termux/master/apk.rb -O $APKRB
+}
+
+###########################
+# Setup necessary folders #
+###########################
+
+setupfolders() {
+	for folder in frameworks sign unsign decompiler recompiler embout shell binder zipalign .bunch; do
+		if [ ! -d $dir/$folder ]; then
+			mkdir $dir/$folder
+		fi
+	done
+}
+
+#########################
+# Check & install deps  #
+#########################
+
+installdeps() {
+	for pkg in apksigner wget; do
+		if [ ! -f $PREFIX/bin/$pkg ]; then
+			apt install $pkg -y
+		fi
+	done
+	case "$(uname -m)" in
+		aarch64)
+			ARCH=aarch64
+			;;
+		arm)
+			ARCH=arm
+			;;
+		armv7l)
+			ARCH=arm
+			;;
+		i686)
+			ARCH=i686
+			;;
+		x86_64)
+			ARCH=x86_64
+			;;
+		*)
+			echo "your device is not supported yet "
+			exit 1
+			;;
+	esac
+	aaptpkg=aapt_7.1.2.33-4_$ARCH.deb
+	aapturl=https://hax4us.github.io/debs/$aaptpkg
+	wget $aapturl
+	dpkg -i $aaptpkg
+	wget https://hax4us.github.io/files/apktool.jar -O .bunch/apktool.jar
+}
+
+####################
+# Wrappers of tmux #
+####################
+
+wrappers() {
+	cat > $PREFIX/bin/tmuxbunch <<- EOM
+	#!/data/data/com.termux/files/usr/bin/bash
+	if [ -d $dir ] then;
+	cd $dir
+	bash tmuxbunch
+else
+echo " tmuxbunch not found"
+fi
+EOM
+
+	cat > $PREFIX/bin/apktool <<-EOM
+	#!/data/data/com.termux/files/usr/bin/bash
+	exec dalvikvm -Xmx512m -Djava.io.tmpdir=$dir -cp $dir/.bunch/apktool.jar brut.apktool.Main "$@"
+	EOM
+}
+
+#setupfolders
+#installdeps
+getapkrb
+exit 0
+wrappers
+chmod +x $PREFIX/bin/tmuxbunch
+chmod +x $PREFIX/bin/apktool
+echo
+echo "DONE"
+sleep 2
+re='\033[0m'
+echo -e "[*] Now you can use Tmux-Bunch-Reborn $re"
