@@ -42,7 +42,7 @@ setupfolders() {
 #########################
 
 installdeps() {
-	for pkg in apksigner wget; do
+	for pkg in apksigner axel; do
 		if [ ! -f $PREFIX/bin/$pkg ]; then
 			apt install $pkg -y
 		fi
@@ -70,9 +70,9 @@ installdeps() {
 	esac
 	aaptpkg=aapt_7.1.2.33-4_$ARCH.deb
 	aapturl=https://hax4us.github.io/debs/$aaptpkg
-	wget $aapturl
+	axel $aapturl
 	dpkg -i $aaptpkg
-	wget https://hax4us.github.io/files/apktool.jar -O .bunch/apktool.jar
+	axel https://hax4us.github.io/files/apktool.jar -O .bunch/apktool.jar
 }
 
 ####################
