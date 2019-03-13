@@ -92,7 +92,7 @@ EOM
 
 	cat > $PREFIX/bin/apktool <<-EOM
 	#!/data/data/com.termux/files/usr/bin/bash
-	exec dalvikvm -Xmx512m -Djava.io.tmpdir=$dir -cp $dir/.bunch/apktool.jar brut.apktool.Main "$@"
+	exec dalvikvm -Xmx512m -Djava.io.tmpdir=$dir -cp $dir/.bunch/apktool.jar brut.apktool.Main "\$@"
 	EOM
 }
 
