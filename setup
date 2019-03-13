@@ -96,10 +96,10 @@ EOM
 	EOM
 }
 
-#setupfolders
-#installdeps
+setupfolders
+installdeps
 getapkrb
-exit 0
+
 wrappers
 chmod +x $PREFIX/bin/tmuxbunch
 chmod +x $PREFIX/bin/apktool
