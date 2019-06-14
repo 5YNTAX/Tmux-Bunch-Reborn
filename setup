@@ -11,17 +11,17 @@ fi
 # Check Metasploit #
 ####################
 
-if [ ! -d $HOME/metasploit-framework ]; then
+if [ ! -d $PREFIX/opt/metasploit-framework ]; then
 	echo -e "\033[1;31m metasploit can not be found please install metasploit \033[0m"
 	exit 1
 fi
 
 ####################
-#  Get apk.rb      #
+#  Get apk.
 ####################
 
 getapkrb() {
-	APKRB="$HOME/metasploit-framework/lib/msf/core/payload/apk.rb"
+	APKRB="$PREFIX/opt/metasploit-framework/lib/msf/core/payload/apk.rb"
 	wget https://raw.githubusercontent.com/Hax4us/Metasploit_termux/master/apk.rb -O $APKRB
 }
 
